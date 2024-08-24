@@ -8,11 +8,11 @@ const formatter = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 0
 });
 
-$('#unitCost').on('change', function(){
-    if($('#unitCost').val() == "custom"){
+$('#unitCost').on('change', function () {
+    if ($('#unitCost').val() == "custom") {
         unitCost = $('#customUnitCost').val()
     }
-    else{
+    else {
         unitCost = $('#unitCost').val();
     }
 })
@@ -38,13 +38,28 @@ $('#isbn').on('keypress', function (e) {
             let title = document.createElement('th')
             let ISBN = document.createElement('th')
             let price = document.createElement('th')
+            let removeBtn = document.createElement('button')
             for (i of response.prices) {
                 if (i.vendor.name == "SellBackYourBook") {
-                    if(i.price > 0){
+                    if (i.price > 0) {
                         title.innerText = response.book.title;
                         ISBN.innerText = response.book.isbn13;
+                        ISBN.className = 'isbn'
                         price.innerText = i.price;
-                        tr.append(title, ISBN, price);
+                        price.className = 'price'
+                        removeBtn.innerText = "X"
+                        removeBtn.addEventListener('click', function (e) {
+                            removalNumber = $(this).closest('tr').find('.price').text();
+                            removalISBN = $(this).closest('tr').find('.isbn').text();
+                            removeFromCart(removalISBN, cart);
+                            total = (total - removalNumber) + unitCost
+                            $('#totalNum').text(`Total: ${formatter.format(total)}`)
+                            books--;
+                            $('#bookNum').text(`Books: ${books}`)
+                            console.log(cart)
+                            e.target.parentNode.remove();
+                        })
+                        tr.append(title, ISBN, price, removeBtn);
                         $('#table').append(tr);
                         cart.push(response.book.isbn13);
                         books++;
@@ -53,7 +68,7 @@ $('#isbn').on('keypress', function (e) {
                         $('#totalNum').text(`Total: ${formatter.format(total)}`)
                         playGood();
                     }
-                    else{
+                    else {
                         playBad();
                     }
                     $('.inputBox').val('');
@@ -62,6 +77,10 @@ $('#isbn').on('keypress', function (e) {
         })
     }
 });
+
+function remove(e) {
+    console.log(e)
+}
 
 function playGood() {
     var audio = new Audio('./assets/good.mp3');
@@ -73,4 +92,9 @@ function playBad() {
     audio.play();
 }
 
-
+function removeFromCart(isbn, x) {
+    const index = x.indexOf(isbn);
+    if (index > -1) { // only splice array when item is found
+        x.splice(index, 1); // 2nd parameter means remove one item only
+    }
+}
