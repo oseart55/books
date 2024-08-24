@@ -39,8 +39,8 @@ $('#isbn').on('keypress', function (e) {
                         cart.push(response.book.isbn13);
                         books++;
                         $('#bookNum').text(`Books: ${books}`)
-                        total = formatter.format(total += i.price);
-                        $('#totalNum').text(`Total: ${total}`)
+                        total = total + i.price;
+                        $('#totalNum').text(`Total: ${formatter.format(total)}`)
                         playGood();
                     }
                     else{
