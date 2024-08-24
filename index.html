@@ -19,7 +19,20 @@
 
 <body>
   <div style="text-align: center;">
-    <input type="text" id="isbn" class="inputBox"></input>
+    <div>
+      <div>
+        <p>Unit Cost</p>
+      </div>
+      <select name="UnitCost" id="unitCost">
+        <option value=".25">$0.25</option>
+        <option value=".50">$0.50</option>
+        <option value=".75">$0.75</option>
+        <option value="1.00">$1.00</option>
+        <option value="custom">Custom Unit Cost</option>
+      </select>
+    </div>
+    <div><input type="text" id="customUnitCost" class="customInputBox" placeholder="Custom Unit Cost"></input></div>
+    <div><input type="text" id="isbn" class="inputBox" placeholder="Enter ISBN"></input></div>
     <div>
       <p id="bookNum">Books:</p>
       <p id="totalNum">Total:</p>

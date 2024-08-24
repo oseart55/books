@@ -1,11 +1,21 @@
 cart = [];
 books = 0;
 total = 0;
+unitCost = 0.25;
 const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 0
 });
+
+$('#unitCost').on('change', function(){
+    if($('#unitCost').val() == "custom"){
+        unitCost = $('#customUnitCost').val()
+    }
+    else{
+        unitCost = $('#unitCost').val();
+    }
+})
 
 $('#isbn').on('keypress', function (e) {
     if (e.which == 13 && $('#isbn').val() != "" && !cart.includes($('#isbn').val())) {
@@ -39,7 +49,7 @@ $('#isbn').on('keypress', function (e) {
                         cart.push(response.book.isbn13);
                         books++;
                         $('#bookNum').text(`Books: ${books}`)
-                        total = total + i.price;
+                        total = total + (i.price - unitCost);
                         $('#totalNum').text(`Total: ${formatter.format(total)}`)
                         playGood();
                     }
